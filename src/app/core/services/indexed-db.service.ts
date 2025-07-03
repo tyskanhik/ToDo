@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { defer, from, Observable, shareReplay, Subject, switchMap } from 'rxjs';
+import { Task } from '../models/task.model';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,6 @@ export class IndexedDBService {
   private dbName = 'TodoAppDB';
   private dbVersion = 1;
   private dbReady$: Observable<IDBDatabase>;
-  private refresh$ = new Subject<void>();
 
   constructor() {
     this.dbReady$ = defer(() => this.initDB().pipe(
@@ -24,10 +24,10 @@ export class IndexedDBService {
         request.onupgradeneeded = (event) => {
           const db = (event.target as IDBOpenDBRequest).result
           if (!db.objectStoreNames.contains('tasks')) {
-            db.createObjectStore('tasks', { keyPath: 'id' });
+            db.createObjectStore('tasks', { keyPath: 'id' })
           }
           if (!db.objectStoreNames.contains('settings')) {
-            db.createObjectStore('settings', { keyPath: 'key' });
+            db.createObjectStore('settings', { keyPath: 'key' })
           }
         }
 
@@ -37,34 +37,36 @@ export class IndexedDBService {
     )
   }
 
-  get<T>(storeName: string, key: string): Observable<T | null> {
+  getAllTasks(): Observable<Task[]> {
     return this.dbReady$.pipe(
       switchMap(db => 
-        from(new Promise<T | null>((resolve) => {
-          const transaction = db.transaction(storeName, 'readonly');
-          const store = transaction.objectStore(storeName);
-          const request = store.get(key);
+        from(new Promise<Task[]>((resolve) => {
+          const transaction = db.transaction('tasks', 'readonly')
+          const store = transaction.objectStore('tasks')
+          const request = store.getAll()
 
-          request.onsuccess = () => resolve(request.result?.value || null);
-          request.onerror = () => resolve(null);
+          request.onsuccess = () => resolve(request.result || [])
+          request.onerror = () => resolve([])
         }))
-      )
-    )
+    ))
   }
 
-  set(storeName: string, key: string, value: any): Observable<void> {
+  saveAllTasks(tasks: Task[]): Observable<void> {
     return this.dbReady$.pipe(
       switchMap(db =>
         from(new Promise<void>((resolve, reject) => {
-          const transaction = db.transaction(storeName, 'readwrite');
-          const store = transaction.objectStore(storeName);
-          const request = store.put({ key, value });
-
-          request.onsuccess = () => {
-            this.refresh$.next();
-            resolve();
-          };
-          request.onerror = () => reject(request.error);
+          const transaction = db.transaction('tasks', 'readwrite')
+          const store = transaction.objectStore('tasks')
+          const clearRequest = store.clear()
+          
+          clearRequest.onsuccess = () => {
+            tasks.forEach(task => {
+              store.add(task)
+            })
+            resolve()
+          }
+          
+          clearRequest.onerror = () => reject(clearRequest.error)
         }))
       )
     )
