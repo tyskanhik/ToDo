@@ -1,0 +1,39 @@
+@use '../../../styles/themes' as *;
+
+.add-task-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--spacer-4);
+  transition: all 0.3s ease-in-out;
+  animation: fadeIn 0.3s ease-out forwards;
+
+  h2 {
+    color: var(--color-text);
+    margin-bottom: var(--spacer-4);
+    text-align: center;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+  }
+
+  @media (min-width: var(--breakpoints-md)) {
+    padding: var(--spacer-5);
+    margin-top: vars(--spacer-4);
+  }
+
+  @media (max-width: var(--breakpoints-sm)) {
+    border-radius: 0;
+    padding: var(--spacer-3);
+    box-shadow: none;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
