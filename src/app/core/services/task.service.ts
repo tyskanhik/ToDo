@@ -18,24 +18,14 @@ export class TaskService {
 
     effect(() => {
       const currentTasks = this._tasks();
-      this.saveTasks(currentTasks).subscribe()
+      this.db.saveAllTasks(currentTasks).subscribe();
     });
   }
 
   private loadInitialTasks(): void {
-    this.db.get<Task[]>(this.STORE_NAME, this.DATA_KEY)
-      .pipe(
-        tap(tasks => {
-          tasks 
-            ? this._tasks.set(tasks)
-            : this._tasks.set([])
-        })
-      )
-      .subscribe()
-  };
-
-  private saveTasks(tasks: Task[]): Observable<void> {
-    return this.db.set(this.STORE_NAME, this.DATA_KEY, tasks)
+    this.db.getAllTasks().pipe(
+      tap(tasks => this._tasks.set(tasks))
+    ).subscribe();
   }
 
   addTask(task: Omit<Task, 'id' | 'completed' | 'createdAt'>): void {
