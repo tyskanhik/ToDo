@@ -5,7 +5,7 @@
   gap: 15px;
   max-width: 600px;
   margin: 0 auto;
-  padding: var(spacer-4);
+  padding: var(--spacer-4);
   background-color: var(--color-bg-secondary);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--box-shadow-md);
@@ -16,12 +16,12 @@
 }
 
 .form-group {
-  margin-bottom: var(spacer-4);
+  margin-bottom: var(--spacer-4);
   position: relative;
   
   label {
     display: block;
-    margin-bottom: map.get(var(--spacer-2));
+    margin-bottom: var(--spacer-2);
     font-weight: var(--font-weight-medium);
     color: var(--color-text);
     transition: all 0.3s ease-in-out;
@@ -30,7 +30,7 @@
   input[type="text"],
   textarea {
     width: 100%;
-    padding: map.get(var(--spacer-3));
+    padding: var(--spacer-3);
     font-size: var(--font-size-base);
     background-color: var(--color-bg);
     border: 1px solid var(--color-border);
