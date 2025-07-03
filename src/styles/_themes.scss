@@ -1,0 +1,47 @@
+@use 'variables' as vars;
+
+//Светлая тема
+$light-theme: (
+  'color-bg': #f8f9fa,
+  'color-text': #2b2d42,
+
+  'color-primary': #4361ee,
+  'color-primary-hover': #3a56d4,
+  'color-danger': #f72585,
+  'color-danger-hover': #e5177b,
+
+  'color-border': #2f6193,
+
+  'box-shadow': 0 1px 3px rgba(0, 0, 0, 0.08),
+  'box-shadow-md': 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+);
+
+//Тёмная тема
+$dark-theme: (
+  'color-bg': #212529,
+  'color-text': #f8f9fa,
+
+  'color-primary': #4895ef,
+  'color-primary-hover': #3a7bc8,
+  'color-danger': #ff7096,
+  'color-danger-hover': #ff477e,
+
+  'color-border': #6ac3a0,
+
+  'box-shadow': 0 1px 3px rgba(0, 0, 0, 0.2),
+  'box-shadow-md': 0 4px 6px -1px rgb(0 96 69),
+);
+
+$all-vars: map-merge($light-theme, vars.$vars);
+
+:root {
+  @each $name, $value in $all-vars {
+    --#{$name}: #{$value};
+  }
+}
+
+[todo-data-theme="dark"] {
+  @each $name, $value in $dark-theme {
+    --#{$name}: #{$value};
+  }
+}
