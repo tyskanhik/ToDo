@@ -1,0 +1,25 @@
+<div class="task-card" [class.completed]="task.completed">
+  <div class="task-header">
+    <h3 class="task-title">{{ task.title }}</h3>
+    <input type="checkbox" 
+           [checked]="task.completed" 
+           (change)="toggle.emit(!task.completed)" 
+           class="task-checkbox"
+           (click)="$event.stopPropagation()">
+  </div>
+
+  <div class="task-body">
+    <p class="task-description" [class.empty]="!task.description">
+      {{ task.description || 'Нет описания' }}
+    </p>
+  </div>
+
+  <div class="task-footer">
+    <button class="edit-button" (click)="edit.emit(); $event.stopPropagation()">
+      Подробнее
+    </button>
+    <button class="delete-button" (click)="delete.emit(); $event.stopPropagation()">
+      Удалить
+    </button>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="edit-task-container">
+  @if (!task) {
+    <div class="not-found">
+      <h2>Задача не найдена</h2>
+      <button (click)="navigateBack()">Вернуться к списку</button>
+    </div>
+  } @else {
+    <h2> {{ task!.title }} </h2>
+    <app-task-form 
+      [task]="task" submitText="Изменить" 
+      [showCompletion]="true" 
+      (submitForm)="updateTask($event)"
+      (cancel)="navigateBack()"
+    ></app-task-form>
+  }
+</div>

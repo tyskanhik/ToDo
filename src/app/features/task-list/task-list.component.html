@@ -1,0 +1,24 @@
+<div class="control">
+  <div class="control__actions">
+    <button type="button" class="add-button" (click)="navigateToAdd()">+ Добавить задачу</button>
+    <div class="filters">
+      <select class="filters-select" (change)="handleFilterChange($event)">
+        <option value="all">Все задачи</option>
+        <option value="active">Активные задачи</option>
+        <option value="completed">Завершенные задачи</option>
+      </select>
+    </div>
+  </div>
+  <div class="task-list">
+    @for (task of filteredTasks(); track task.id) {
+      <app-task-card
+        [task]="task"
+        (toggle)="chekedCompleted(task.id, task)"
+        (delete)="deleteTask(task.id)"
+        (edit)="navigatePreview(task.id)"
+      ></app-task-card>
+    } @empty {
+      <div class="empty-state"> {{ emptyStateMessage }} </div>
+    }
+  </div>
+</div>

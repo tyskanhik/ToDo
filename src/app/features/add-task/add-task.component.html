@@ -1,0 +1,8 @@
+<div class="add-task-container">
+  <h2>Добавить новую задачу</h2>
+  <app-task-form 
+    submitText="Создать"
+    (submitForm)="addTask($event)"
+    (cancel)="navigateBack()"
+  ></app-task-form>
+</div>
